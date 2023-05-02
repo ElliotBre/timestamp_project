@@ -42,12 +42,14 @@ app.get('/api/:date?', (req,res) =>
     }
   })
 
-app.get('/api/', (req,res) =>
+app.get("/api/", (req,res) =>
   {
-    const utc = new Date.toUTCString();
-    const unix = Date.parse(utc);
-
-    res.json({ unix: unix, utc: utc})
+  let date = new Date();
+  let UTC = date.getTime();
+  UTC = new Date(UTC);
+  UTS = UTC.toUTCString();
+  let UNIX = date.getTime();
+  res.json({ unix: UNIX, utc: UTS });
   })
 
 
