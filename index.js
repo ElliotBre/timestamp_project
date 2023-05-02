@@ -24,7 +24,17 @@ app.get('/api/:date?', (req,res) =>
     const Regex = /^[0-9]+$/;
     const numCheck = Regex.test(date);
 
-    if(numCheck == false)
+    if(req.params.date === '' || req.params.date === undefined) //handle empty dates
+    {
+      const unix = Date.parse(new Date())
+      const utc = new Date(unix).toUTCString();
+
+      console.log({unix: unix, utc: utc}) //check if right time is being logged in respect to system times (makes sure input time was not out of date).
+      res.json({unix: unix, utc: utc})
+   }
+  else
+  {
+    if(numCheck == false) //handle dates that fail regex check
     {
       const unix = Date.parse(date)
       const utc = new Date(unix).toUTCString();
@@ -33,23 +43,14 @@ app.get('/api/:date?', (req,res) =>
    ? res.json({ "unix": unix, "utc": utc })
    : res.json({ error: "Invalid Date" });
     }
-    else
+    else //handle dates that pass regex check
     {
       const unix = parseInt(date);
       const utc = new Date(unix).toUTCString();
 
       res.json({unix: unix, utc: utc})
     }
-  })
-
-app.get("/api/", (req,res) =>
-  {
-  let date = new Date();
-  let UTC = date.getTime();
-  UTC = new Date(UTC);
-  UTS = UTC.toUTCString();
-  let UNIX = date.getTime();
-  res.json({ unix: UNIX, utc: UTS });
+  }
   })
 
 
